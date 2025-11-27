@@ -53,5 +53,16 @@ func main() {
 	} else if err != nil {
 		fmt.Printf("Error starting HTTP server: %v\n", err)
 		os.Exit(1)
+		// Exit function terminates the program with the given exit code. A non-zero exit code indicates an error.
 	}
+
+	// MULTIPLEXING REQUEST HANDLERS USING SERVEMUX
+	// A ServeMux is an HTTP request multiplexer. It matches the URL of each incoming request against a list of registered patterns and calls the handler for the pattern that most closely matches the URL.
+	// Here, we create a new ServeMux instance and register our handler functions with it.
+	// Finally, we start the HTTP server with the ServeMux as the handler.
+	mux := http.NewServeMux()
+	mux.HandleFunc("/", getRoot)
+	mux.HandleFunc("/hello", getHello)
+
+	err = http.ListenAndServe(":8080", mux)
 }
